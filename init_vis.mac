@@ -1,0 +1,87 @@
+# Macro file for the initialization
+# in interactive session
+#
+
+/g4TPX/phys/addPhysics emstandard_opt4
+/g4TPX/phys/addPhysics pai_photon
+
+/process/em/pixe true
+/process/em/fluo true
+/process/em/auger true
+/process/em/augerCascade true
+/process/em/deexcitationIgnoreCut true
+/process/em/Polarisation true
+
+#/g4TPX/setGDMLOutputFile DetectorModule1.gdml
+/g4TPX/setSensorPos 0 0 0 cm
+/g4TPX/setShieldSize 10 10 10 cm
+/g4TPX/setColDiameter 25 mm
+/g4TPX/setScattererMaterial G4_Air
+/g4TPX/setScattererSize 0.01 0.01 0.01 mm
+/g4TPX/setScattererPos -22 0 0 cm
+
+/g4TPX/setDetectorType TPX3
+/g4TPX/setSensorMaterial CdTe
+/g4TPX/setSensorThickness 1 mm
+/g4TPX/setPixelSize 55 um
+/g4TPX/setPixelNumber 256
+
+/g4TPX/loadEnergyEdgeFile ../SingleRun/source_data/calibrate_source/EnergyEdges_Am241.txt
+/g4TPX/loadEnergySpectrumFile ../SingleRun/source_data/calibrate_source/EnergySpectrum_Am241.txt
+/g4TPX/loadPolarizationDegreeFile ../SingleRun/source_data/calibrate_source/PolarizationDegree_Am241.txt
+
+/g4TPX/setSourceRadius 1 mm
+# /g4TPX/setSourceThickness 0.5 cm
+/g4TPX/setSourcePos 0 0 -1.5 cm
+/g4TPX/setSourceAxisDir 0 0 1
+/g4TPX/setSourceType radioactive
+/g4TPX/setLimitRegion true
+
+/g4TPX/setBiasVoltage 130
+/g4TPX/setElecField -0.461477089 1.0 50.0
+/g4TPX/setDepletionVoltage 51.98
+/g4TPX/setElecMobility 145000.0
+/g4TPX/setHoleMobility 49690.5
+/g4TPX/setTemperature 298.15
+
+/g4TPX/setAllpix false
+/g4TPX/simulateMinor true
+/g4TPX/setEPerCluster 10
+/g4TPX/useTheoCCE true
+/g4TPX/checkUntriggered true
+/g4TPX/setEnergyLowerBound 0
+/g4TPX/setMinTimeStep 0.8 ns
+/g4TPX/setMaxTimeStep 8 ns
+/g4TPX/setMinorCutDepth 250 um
+
+/g4TPX/setWpFile ../DetectorCalibrationData/3DWeightpotential1mm_1p5_100_R.txt
+/g4TPX/setCCEFile ../DetectorCalibrationData/CCE_Theo_all_100V_down.txt
+/g4TPX/setThresholdFile ../DetectorCalibrationData/Threshold_new.txt
+/g4TPX/setGainFile ../DetectorCalibrationData/regionCoef_2pix_new.txt
+/g4TPX/setBaselineFile ../DetectorCalibrationData/baselineCenter_400V_2_norm.txt
+/g4TPX/setNoiseFile ../DetectorCalibrationData/baselineSigma_400V_2.txt
+/g4TPX/setGrayNoise 0.5263
+# ---------- Reference values for coupled noise ----------
+# CdTe -> 0.6477
+# Si     -> 0.5263
+
+/g4TPX/setPICGridSize 5 um
+/g4TPX/setPICNGrid3D 32 32 20
+
+/g4TPX/setOutputDir ../SingleRun/Data/Test/
+/gun/particle gamma
+/random/setSeeds 1 1
+
+# Set some default verbose
+/control/verbose 2
+/control/saveHistory
+/run/verbose 2
+#
+# Change the default number of threads (in multi-threaded mode)
+#/run/numberOfThreads 4
+#
+# Initialize kernel
+/run/initialize
+#
+# Visualization setting
+/control/execute vis.mac
