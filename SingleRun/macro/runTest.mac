@@ -1,0 +1,133 @@
+# Macro file for the initialization
+# in interactive session
+#
+
+/g4TPX/phys/addPhysics emstandard_opt4
+/g4TPX/phys/addPhysics pai_photon
+
+/process/em/pixe true
+/process/em/fluo true
+/process/em/auger true
+/process/em/augerCascade true
+/process/em/deexcitationIgnoreCut true
+/process/em/Polarisation true
+
+#/g4TPX/setGDMLOutputFile DetectorModule1.gdml
+/g4TPX/setSensorPos 0 0 0 cm
+/g4TPX/setShieldSize 10 10 10 cm
+/g4TPX/setColDiameter 25 mm
+/g4TPX/setScattererMaterial G4_Air
+/g4TPX/setScattererSize 0.01 0.01 0.01 mm
+/g4TPX/setScattererPos -22 0 0 cm
+
+/g4TPX/setDetectorType TPX3
+/g4TPX/setSensorMaterial CdTe
+/g4TPX/setSensorThickness 1 mm
+/g4TPX/setPixelSize 55 um
+/g4TPX/setPixelNumber 256
+
+/g4TPX/loadEnergyEdgeFile ../SingleRun/source_data/calibrate_source/EnergyEdges_Cs137.txt
+/g4TPX/loadEnergySpectrumFile ../SingleRun/source_data/calibrate_source/EnergySpectrum_Cs137.txt
+/g4TPX/loadPolarizationDegreeFile ../SingleRun/source_data/calibrate_source/PolarizationDegree_Cs137.txt
+# /g4TPX/setSourceType pion
+# /g4TPX/setPionMomentum 40
+
+# /g4TPX/setSourceRadius 3 mm
+# /g4TPX/setSourceThickness 0.5 cm
+/g4TPX/setSourceRadius 1 mm
+# /g4TPX/setSourcePos 10 0 10 cm
+# /g4TPX/setSourceAxisDir -1 0 -1
+# ---------- Source position for Cs137 & Co60 ----------
+/g4TPX/setSourcePos 0 -6 0 cm
+/g4TPX/setSourceAxisDir 0 1 0
+# ---------- Source position for Na22 ----------
+# /g4TPX/setSourcePos 0 -2 0.7 cm
+# /g4TPX/setSourceAxisDir 0 0.944 -0.33
+# ---------- Source position for Ba133 ----------
+# /g4TPX/setSourcePos 0 -5 3.4 cm
+# /g4TPX/setSourceAxisDir 0 0.6357 -0.7719
+# ---------- Source position for Am241 (up) ----------
+# /g4TPX/setSourcePos 0 0 2 cm
+# /g4TPX/setSourceAxisDir 0 0 -1
+# ---------- Source position for Am241 (down) ----------
+# /g4TPX/setSourcePos 0 0 -2 cm
+# /g4TPX/setSourceAxisDir 0 0 1
+# /g4TPX/setSourcePos 0 0 -5 cm
+# /g4TPX/setSourcePos 0 -2.8 3.4 cm
+/g4TPX/setSourceType radioactive
+/g4TPX/setLimitRegion true
+
+/g4TPX/setBiasVoltage -100
+/g4TPX/setElecField -0.35311585 1.0 50.0
+/g4TPX/setDepletionVoltage 51.98
+/g4TPX/setElecMobility 156564.002
+/g4TPX/setHoleMobility 10000.0
+/g4TPX/setTemperature 298.15
+
+# ---------- Reference values for CdTe electric field parameters ----------
+# 100V Cs137-Co60     -> -0.35311585 1.0 50.0
+# 100V Na22              -> -0.461477089 1.0 50.0
+# 100V Cs137             -> -0.390252728 1.0 50.0
+# 100V Am241            -> -0.281347206 1.0 50.0
+# 200V Am241            -> -0.312680756 1.5 80.0
+# 300V Am241            -> -0.478376159 1.0 100.0
+# 400V Am241            -> -0.479453734 1.0 100.0
+# ---------- Reference values for CdTe electron mobilities ----------
+# 100V Cs137-Co60     -> 156564.002
+# 100V Na22              -> 177741.336
+# 100V Cs137             -> 160347.691
+# 100V Am241            -> 145041.965
+# 200V Am241            -> 148768.614
+# 300V Am241            -> 180072.054
+# 400V Am241            -> 188906.057
+# ---------- Reference values for CdTe hole mobilities ----------
+# Standard -> 10000.0
+# ---------- Reference values for Si electric field parameter (depletion voltage) ----------
+# Standard -> 51.98
+# ---------- Reference values for Si electron mobilities ----------
+# Standard -> 145000.0
+# ---------- Reference values for Si hole mobilities ----------
+# Standard -> 49690.5
+
+/g4TPX/setAllpix false
+/g4TPX/simulateMinor true
+/g4TPX/setEPerCluster 10
+/g4TPX/useTheoCCE true
+/g4TPX/checkUntriggered true
+/g4TPX/setEnergyLowerBound 400
+/g4TPX/setMinTimeStep 0.8 ns
+/g4TPX/setMaxTimeStep 8 ns
+/g4TPX/setMinorCutDepth 250 um
+
+/g4TPX/setWpFile ../DetectorCalibrationData/3DWeightpotential1mm_1p5_100_R.txt
+/g4TPX/setCCEFile ../DetectorCalibrationData/CCE_Theo_all_100V_down.txt
+/g4TPX/setThresholdFile ../DetectorCalibrationData/Threshold_new.txt
+/g4TPX/setGainFile ../DetectorCalibrationData/regionCoef_2pix_new.txt
+/g4TPX/setBaselineFile ../DetectorCalibrationData/baselineCenter_400V_2_norm.txt
+/g4TPX/setNoiseFile ../DetectorCalibrationData/baselineSigma_400V_2.txt
+/g4TPX/setGrayNoise 0.6477
+/g4TPX/setEnergyCoef -0.00114 1.186 -1.5
+# ---------- Reference values for coupled noise ----------
+# CdTe -> 0.6477
+# Si     -> 0.4816
+
+/g4TPX/setPICGridSize 5 um
+/g4TPX/setPICNGrid3D 32 32 20
+
+/g4TPX/setOutputDir ../SingleRun/Data/Test/
+
+# Set some default verbose
+/control/verbose 0
+/control/saveHistory
+/run/verbose 0
+
+# Change the default number of threads (in multi-threaded mode)
+/run/numberOfThreads 4
+
+# Initialize kernel
+/run/initialize
+/random/setSeeds 1 1
+
+/gun/particle gamma
+#/run/beamOn 10000000
+/run/beamOn 100
