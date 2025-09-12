@@ -54,6 +54,7 @@ void EnergyHistoProcess(std::string inputFilename, std::string outputFilepath, s
 
         // Read input data from the specified branch of the tree contained in the input file
         std::vector<Double_t> pixelSignals, pixelCenterX, pixelCenterY, pixelCenterZ;
+        std::vector<Int_t> triggered;
         TFile *inputFile = new TFile(inputFilename.c_str());
         TNtuple *pixelData = static_cast<TNtuple*>(inputFile->Get("PixelData3D"));
         if (!pixelData) {
@@ -84,6 +85,12 @@ void EnergyHistoProcess(std::string inputFilename, std::string outputFilepath, s
             return;
         }
         pixelZBranch->SetObject(&pixelCenterZ);
+        TBranch *triggeredBranch = pixelData->FindBranch("Triggered");
+        if (!triggeredBranch) {
+            std::cout << "Could not find the Triggered branch on the ntuple, unable to proceed." << std::endl;
+            return;
+        }
+        triggeredBranch->SetObject(&triggered);
 
         Double_t meanPixelNumber = 0;
         UInt_t eventCount = 0;
@@ -101,9 +108,11 @@ void EnergyHistoProcess(std::string inputFilename, std::string outputFilepath, s
             }
             pixelData->GetEntry(i);
             Double_t totalCharge = 0;
-            for (auto &singlePixel : pixelSignals) {
-                // Calculate total charge of the event
-                totalCharge += singlePixel;
+            for (Int_t ip = 0; ip < pixelSignals.size(); ip++) {
+                if (triggered[ip] > 0) {
+                    // Calculate total charge of the event
+                    totalCharge += pixelSignals[ip];
+                }
             }
             if (fitRange.first < totalCharge && fitRange.second > totalCharge) {
                 meanPixelNumber += pixelSignals.size();
@@ -154,7 +163,7 @@ void EnergyHistoProcess(std::string inputFilename, std::string outputFilepath, s
         gStyle->SetOptFit(0);
         // gStyle->SetOptFit(1111);
         spectrumHist->SetTitle("Energy Spectrum");
-        spectrumHist->GetYaxis()->SetTitle("Count");  
+        spectrumHist->GetYaxis()->SetTitle("Count");
         spectrumHist->GetXaxis()->SetTitle("Energy/keV");
         spectrumHist->SetLineWidth(4);
         // spectrumHist->SetMinimum(1e2);
